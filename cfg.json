@@ -1,0 +1,8 @@
+{
+    "master":"138422077055",
+    "burst_mode":0,
+    "target_slave_framerate":60,
+    "native_frame_rate":60,
+    "target_slave_resX":848,
+    "target_slave_resY":480
+}
