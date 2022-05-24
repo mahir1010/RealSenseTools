@@ -28,7 +28,8 @@ base_command = 'ffmpeg -i {} -ss {} -t {} -crf 15 {}.mp4'
 commands=[]                                                                           
 for index,row in camera_map.iterrows():
     file_path=os.path.join(root,row['File'])
-    commands.append(base_command.format(file_path,sync[sync['Camera']==row['Camera']]['Start'].values[0],seconds,os.path.join(root,row['Camera'])))
+    if os.path.exists(file_path):
+        commands.append(base_command.format(file_path,sync[sync['Camera']==row['Camera']]['Start'].values[0],seconds,os.path.join(root,row['Camera'])))
                                                                                                  
 def clip_videos(command):                                                            
     os.system(command)                                       
