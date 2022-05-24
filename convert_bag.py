@@ -4,7 +4,7 @@ import os
 import pickle as pk
 import sys
 import traceback
-
+from multiprocessing import Pool
 import cv2
 import numpy as np
 import pyrealsense2 as rs
@@ -41,9 +41,10 @@ EXTRACT = False  # Extract frames at every 'EXTRACT_FRAME_AT' step
 
 MEDIAN_BLUR = False
 SHOW_DEPTH = False
+MAX_PROCESSES = 10
+SHOW_RGB = False
 
-
-for index, camera in enumerate(cameras):
+def convert(camera):
     if EXTRACT:
         os.makedirs(os.path.join(root, camera), exist_ok=True)
     image_folder = os.path.join(root, camera)
@@ -108,11 +109,12 @@ for index, camera in enumerate(cameras):
                     if EXTRACT and count % EXTRACT_FRAME_AT == 0:
                         cv2.imwrite(os.path.join(
                             image_folder, f"{count}.png"), color_image)
-                cv2.imshow("color", color_image)
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    video_writer_color.release()
-                    video_writer_depth.release()
-                    break
+                if SHOW_RGB:
+                    cv2.imshow("color", color_image)
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        video_writer_color.release()
+                        video_writer_depth.release()
+                        break
             del prev_frame
             prev_frame = align.process(frame)
             timestamp = frame.timestamp
@@ -123,3 +125,6 @@ for index, camera in enumerate(cameras):
             if SHOW_DEPTH:
                 video_writer_depth.release()
             break
+
+pool = Pool(processes=MAX_PROCESSES)                                                        
+pool.map(convert, cameras) 
