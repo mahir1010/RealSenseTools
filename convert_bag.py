@@ -125,6 +125,6 @@ def convert(camera):
             if SHOW_DEPTH:
                 video_writer_depth.release()
             break
-
-pool = Pool(processes=MAX_PROCESSES)                                                        
-pool.map(convert, cameras) 
+if __name__ == '__main__':
+    pool = Pool(processes=MAX_PROCESSES)                                                        
+    pool.map(convert, cameras) 
