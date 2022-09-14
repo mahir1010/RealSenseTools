@@ -20,13 +20,13 @@ os.makedirs(path,exist_ok=True)
 try:
     camera_map=pd.read_csv('camera_map.csv')
     sync=pd.read_csv(os.path.join(root,'sync.csv'))
-    if len(set(camera_map['Camera'].to_list()).intersection(sync['Camera'].to_list()))!=len(camera_map):
+    if len(set(camera_map['Camera'].to_list()).intersection(sync['Camera'].to_list()))!=len(sync['Camera']):
         raise Exception("Camera names not matching in camera_map.csv and sync.csv")
 except Exception as e:
     print(e)
     exit()
 
-base_command = 'ffmpeg -i {} -ss {} -t {} -crf 15 {}.mp4' if not USE_GPU else 'ffmpeg -hwaccel cuda -threads 4 -i {} -ss {} -t {} -c:v h264_nvenc -preset:v p7 -tune:v hq -rc:v vbr -cq:v 19 {}.mp4'
+base_command = 'ffmpeg -i {} -ss {} -t {} -crf 15 {}.mp4' if not USE_GPU else 'ffmpeg -hwaccel cuda -threads 4 -i {} -ss {} -t {} -vsync cfr -c:v h264_nvenc -preset:v p7 -tune:v hq -rc:v vbr -cq:v 10 {}.mp4'
 
 
 commands=[]                                                                           

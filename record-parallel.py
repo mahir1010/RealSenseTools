@@ -39,18 +39,10 @@ for i in range(len(system.devices)):
         sensor.set_option(rs.option.inter_cam_sync_mode,1)
     else:
         slaves.append(system.devices[i])
-        roi_device=system.devices[i].first_roi_sensor()
-        roi=roi_device.get_region_of_interest()
-        # ROI for autoexposure for slave cameras.
-        roi.min_x=290
-        roi.min_y=270
-        roi.max_x=370
-        roi.max_y=310
-        roi_device.set_region_of_interest(roi)
         sensor=slaves[-1].first_depth_sensor()
         c_sensor=slaves[-1].first_color_sensor()
         c_sensor.set_option(rs.option.enable_auto_exposure, 1)
-        sensor.set_option(rs.option.enable_auto_exposure, 1)
+        c_sensor.set_option(rs.option.auto_exposure_priority,0)
         sensor.set_option(rs.option.inter_cam_sync_mode,BURST_MODE+3) # Add 3 to get inter_cam_sync_mode
 
 #Master Camera setup
