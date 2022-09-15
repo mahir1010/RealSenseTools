@@ -26,7 +26,7 @@ except Exception as e:
     print(e)
     exit()
 
-base_command = 'ffmpeg -i {} -ss {} -t {} -crf 15 {}.mp4' if not USE_GPU else 'ffmpeg -hwaccel cuda -threads 4 -i {} -ss {} -t {} -vsync cfr -c:v h264_nvenc -preset:v p7 -tune:v hq -rc:v vbr -cq:v 10 {}.mp4'
+base_command = 'ffmpeg -i {} -ss {} -t {} -crf 15 {}.mp4' if not USE_GPU else 'ffmpeg -hwaccel cuda -threads 8 -i {} -ss {} -t {} -vsync vfr -c:v h264_nvenc -preset:v p6 -tune:v hq {}.mp4'
 
 
 commands=[]                                                                           
